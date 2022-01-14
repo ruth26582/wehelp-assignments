@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./style.css" />
-  <title>Assignment_Week_1</title>
+  <title>RWD layout</title>
 </head>
 <body>
   <div class="frame">
@@ -25,8 +25,8 @@
     <div class="text">Welcome to My Home</div>
   </div>
 
-  <div class="container">
-    <div class="image-items">
+  <div id="list" class="list">
+    <!-- <div class="image-items">
       <div class="image-frame">
         <img src="./image/101.jpeg" alt="101">
         <p class="image-text">台北101</p>
@@ -60,7 +60,59 @@
         <img src="./image/101.jpeg" alt="101">
         <p class="image-text">台北101</p>
       </div>
-    </div>
+    </div> -->
   </div>
+
+  <script>
+    var attractionList = [];
+    // 取得資料
+    function getData() {
+      let src = "https://padax.github.io/taipei-day-trip-resources/taipei-attractions-assignment.json";
+
+      fetch(src)
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (result) {
+          // 將拿到的資料存進空陣列裡
+          let allList = result.result.results;
+          for (let i in allList.slice(0, 8)) {
+            let attractionName = allList[i].stitle;
+            let attractionImage = "https" + allList[i].file.split("https")[1];
+            attractionList.push({LocationName:attractionName, ImageUrl: attractionImage});
+          }
+          addElementImageItems();
+        });
+    }
+    getData();
+    
+    function addElementImageItems() {
+      imageItem = document.createElement("div");
+      document.getElementById('list').appendChild(imageItem);
+      imageItem.setAttribute("id", "image-items");
+      imageItem.setAttribute("clsss", "image-items");
+      let classSelector = document.querySelectorAll('.image-frame');
+      for (let x in attractionList) {
+        let location = attractionList[x];
+        createImageAndPElement(location.ImageUrl,location.LocationName);
+      }
+    }
+
+    function createImageAndPElement(imageUrl, locationName) {
+      imageFrame = document.createElement("div");
+      document.getElementById('image-items').appendChild(imageFrame);
+      imageFrame.setAttribute("class", "image-frame");
+
+      img = document.createElement("img");
+      img.src = imageUrl;
+      text = document.createElement("p");
+      text.textContent = locationName;
+      text.setAttribute("class", "image-text");
+
+      imageFrame.appendChild(img);
+      imageFrame.appendChild(text);
+    }
+
+  </script>
 </body>
 </html>
