@@ -21,11 +21,11 @@
 <img src="https://github.com/ruth26582/wehelp-assignments/blob/main/week-5/image/3-4.png" width="780px" height="140px">
 
 ### ● 使用 SELECT 指令取得欄位 username 是 test 的會員資料。
-    SELECT * FROM member where username='test';
+    SELECT * FROM member WHERE username='test';
 <img src="https://github.com/ruth26582/wehelp-assignments/blob/main/week-5/image/3-5.png" width="750px" height="100px">
 
 ### ● 使用 SELECT 指令取得欄位 username 是 test、且欄位 password 也是 test 的資料。
-    SELECT * FROM member where username='test' AND password='test';
+    SELECT * FROM member WHERE username='test' AND password='test';
 <img src="https://github.com/ruth26582/wehelp-assignments/blob/main/week-5/image/3-6.png" width="750px" height="100px">
 
 ### ● 使用 UPDATE 指令更新欄位 username 是 test 的會員資料，將資料中的 name 欄位改成 test2。
@@ -43,3 +43,11 @@
 ### ● 取得 member 資料表中，所有會員 follower_count 欄位的平均數。
     SELECT AVG(follower_count) FROM member;
 <img src="https://github.com/ruth26582/wehelp-assignments/blob/main/week-5/image/4-3.png" width="240px" height="100px">
+
+### ● 使用 SELECT 搭配 JOIN 語法，取得所有留言，結果須包含留言者會員的姓名。
+    SELECT message.id, member.name, message.content, message.time FROM message INNER JOIN member ON member.id=message.member_id;
+<img src="https://github.com/ruth26582/wehelp-assignments/blob/main/week-5/image/5-1.png" width="550px" height="240px">
+
+### ● 使用 SELECT 搭配 JOIN 語法，取得 member 資料表中欄位 username 是 test 的所有留言，資料中須包含留言者會員的姓名。
+    SELECT message.id, member.name, member.username, message.content, message.time FROM member INNER JOIN message ON member.id=message.member_id WHERE username='test';
+<img src="https://github.com/ruth26582/wehelp-assignments/blob/main/week-5/image/5-2.png" width="625px" height="140px">
