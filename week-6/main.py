@@ -27,13 +27,11 @@ def signup():
         password = request.form['password']
 
         cursor = db.cursor()
-        cursor.execute("select username from member")
-        result = cursor.fetchall()
-        for i in range(len(result)):
-            print(result[i][0])
-            if result[i][0] == username:
-                cursor.close()
-                return redirect(url_for("error", message='帳號已經被註冊'))
+        sql = "select count(1) from member where username = %(username)s;"
+        cursor.execute(sql, {'username': username})
+        result = cursor.fetchone()
+        if result[0] == 1:
+            return redirect(url_for("error", message='帳號已經被註冊'))
         else:
             if name == '' or username == '' or password == '':
                 return redirect(url_for("error", message='請輸入姓名、帳號、密碼'))
@@ -52,19 +50,18 @@ def signin():
         password = request.form['password']
 
         cursor = db.cursor()
-        cursor.execute("select username, password from member;")
-        result = cursor.fetchall()
-        for i in range(len(result)):
-            if (username == result[i][0]) and (password == result[i][1]):
-                session['username'] = username
-                cursor.close()
-                return redirect(url_for("member"))
-
-        if (username == '' and password == '') or (username == '' and password != '') or (username != '' and password == ''):
-            return redirect(url_for("error", message='請輸入帳號、密碼'))
+        sql = "select count(1) from member where username = %(username)s and password = %(password)s;"
+        cursor.execute(sql, {'username': username, 'password': password})
+        result = cursor.fetchone()
+        if result[0] == 1:
+            session['username'] = username
+            cursor.close()
+            return redirect(url_for("member"))
         else:
-            return redirect(url_for("error", message='帳號、或密碼輸入錯誤'))
-
+            if (username == '' and password == '') or (username == '' and password != '') or (username != '' and password == ''):
+                return redirect(url_for("error", message='請輸入帳號、密碼'))
+            else:
+                return redirect(url_for("error", message='帳號、或密碼輸入錯誤'))
     else:
         if "username" in session:
             return redirect(url_for("member"))
@@ -76,11 +73,10 @@ def member():
     if "username" in session:
         username = session["username"]
         cursor = db.cursor()
-        cursor.execute("select name, username from member;")
-        results = cursor.fetchall()
-        for x in results:
-            if username in x:
-                name = x[0]
+        sql = "select name from member where username = %(username)s;"
+        cursor.execute(sql, {'username': username})
+        result = cursor.fetchone()
+        name = result[0]
         return render_template("member.html", accountVal=username, name=name)
     else:
         return redirect(url_for("login"))
