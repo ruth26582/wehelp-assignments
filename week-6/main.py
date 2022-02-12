@@ -50,11 +50,12 @@ def signin():
         password = request.form['password']
 
         cursor = db.cursor()
-        sql = "select count(1) from member where username = %(username)s and password = %(password)s;"
+        sql = "select id, name from member where username = %(username)s and password = %(password)s;"
         cursor.execute(sql, {'username': username, 'password': password})
         result = cursor.fetchone()
-        if result[0] == 1:
+        if result != None:
             session['username'] = username
+            session['name'] = result[1]
             cursor.close()
             return redirect(url_for("member"))
         else:
@@ -72,11 +73,7 @@ def signin():
 def member():
     if "username" in session:
         username = session["username"]
-        cursor = db.cursor()
-        sql = "select name from member where username = %(username)s;"
-        cursor.execute(sql, {'username': username})
-        result = cursor.fetchone()
-        name = result[0]
+        name = session["name"]
         return render_template("member.html", accountVal=username, name=name)
     else:
         return redirect(url_for("login"))
