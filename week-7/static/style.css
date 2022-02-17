@@ -1,0 +1,58 @@
+body {
+  margin: 0 auto;
+}
+
+h1 {
+  background-color: rgb(198, 166, 228);
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0px;
+}
+
+.container {
+  /* display: flex; */
+  justify-content: center;
+}
+
+form, .searchBox, .updateBox{
+  justify-content: center;
+  display: grid;
+}
+
+hr {
+  margin-top: 30px;
+}
+
+h2 {
+  text-align: center;
+}
+
+.btn {
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.btn {
+  text-align: center;
+}
+
+.search {
+  margin-top: 50px;
+}
+
+.search-group , .update-group{
+  display: flex;
+}
+
+.search-btn, .update-btn {
+  margin-left: 10px;
+}
+
+.showSearchData, .showUpdateData {
+  text-align: center;
+}
